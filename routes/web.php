@@ -15,4 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return inertia('Home');
-});
+})->name('app');
+
+Route::get('/more', function () {
+    return inertia('More');
+})->name('app.more');
+
+Route::get('/davinci', function() {
+    return inertia('Davinci');
+})->name('app.davichi');

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,4 @@ Route::get('/davinci', function() {
     return inertia('Davinci');
 })->name('app.davichi');
 
-Route::post('/sifu/ask', function()
-{
-    return inertia('Response');
-})->name('app.ask');
+Route::post('/sifu/ask', [Controller::class, 'askSifu'])->name('app.ask');

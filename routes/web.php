@@ -24,3 +24,8 @@ Route::get('/more', function () {
 Route::get('/davinci', function() {
     return inertia('Davinci');
 })->name('app.davichi');
+
+Route::post('/sifu/ask', function()
+{
+    return inertia('Response');
+})->name('app.ask');

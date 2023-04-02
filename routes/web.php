@@ -27,3 +27,4 @@ Route::get('/davinci', function() {
 })->name('app.davichi');
 
 Route::post('/sifu/ask', [Controller::class, 'askSifu'])->name('app.ask');
+Route::post('/sifu/ask/img', [Controller::class, 'getAskImageGeneration'])->name('app.img.ask');

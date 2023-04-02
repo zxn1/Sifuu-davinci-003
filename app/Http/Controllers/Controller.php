@@ -31,7 +31,7 @@ class Controller extends BaseController
         // Set the request headers
         $headers = [
             'Content-Type: application/json',
-            'Authorization: Bearer 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',
+            'Authorization: Bearer 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',
         ];
 
         // Set the request options
@@ -54,5 +54,32 @@ class Controller extends BaseController
 
         // return $res;
         return inertia('Response', ['response' => $text]);
+    }
+
+    public function getAskImageGeneration(Request $req)
+    {
+        $endpoint = 'https://api.openai.com/v1/images/generations';
+        $options = [
+            'http' => [
+                'header' => [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer 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',
+                ],
+                'method' => 'POST',
+                'content' => json_encode([
+                    'prompt' => $req->prompt,
+                    'n' => 1,
+                    'size' => '1024x1024'
+                ]),
+            ],
+        ];
+        $response = file_get_contents($endpoint, false, stream_context_create($options));
+        
+        // Extract the generated text from the response
+        $res = json_decode($response, true);
+        $url = $res['data'][0]['url'];
+        
+        // return $text;
+        return inertia('ImgResponse', ['response' => $url]);
     }
 }

@@ -38,7 +38,7 @@
                                 <button type="button" style="height : 40px;" class="btn btn-danger mr-1" @click="clearAsk">Clear <strong>X</strong></button>
                             </td>
                             <td>
-                                <Link :href="checked==false ? route('app.ask') : route('app.img.ask')" type="button" class="btn btn-primary" method="post" :data="{'prompt': prompt}">
+                                <Link :href="checked==false? route('app.ask') : route('app.img.ask')" type="button" class="btn btn-primary" method="post" :data="{'prompt': prompt}">
                                     <table>
                                         <tr>
                                             <td>
@@ -57,19 +57,24 @@
                     </table>
                 </div>
             </div>
-
+            
+            <p class="mt-6 text-xl leading-8 text-gray-700">Your requested image..</p>
+            <img :src="response" class="mt-3 img-fluid rounded-lg"/>
           </div>
     </div>
 </template>
 
 <script>
-import AppLayout from "../Layout/Layout.vue";
-import { Link } from '@inertiajs/inertia-vue3';
+import Layout from "../Layout/Layout.vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
-export default {
-    layout : AppLayout,
-    components:  {
-        Link
+export default { 
+    layout : Layout,
+    props : {
+        response : Object,
+    },
+    components: {
+        Link,
     },
     data() {
         return {

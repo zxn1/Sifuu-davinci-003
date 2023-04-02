@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -31,7 +32,7 @@ class Controller extends BaseController
         // Set the request headers
         $headers = [
             'Content-Type: application/json',
-            'Authorization: Bearer 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',
+            'Authorization: Bearer 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',
         ];
 
         // Set the request options
@@ -44,7 +45,12 @@ class Controller extends BaseController
         ];
 
         // Make the request and capture the response
-        $response = file_get_contents($endpoint, false, stream_context_create($options));
+        try {
+            $response = file_get_contents($endpoint, false, stream_context_create($options));
+        } catch (Exception $ex)
+        {
+            return inertia('Response', ['response' => 'Failed to retrieve the information!']);
+        }
 
         // Extract the generated text from the response
         $res = json_decode($response, true);
@@ -63,7 +69,7 @@ class Controller extends BaseController
             'http' => [
                 'header' => [
                     'Content-Type: application/json',
-                    'Authorization: Bearer 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',
+                    'Authorization: Bearer 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',
                 ],
                 'method' => 'POST',
                 'content' => json_encode([
@@ -73,8 +79,14 @@ class Controller extends BaseController
                 ]),
             ],
         ];
-        $response = file_get_contents($endpoint, false, stream_context_create($options));
-        
+
+        try {
+            $response = file_get_contents($endpoint, false, stream_context_create($options));
+        } catch (Exception $ex)
+        {
+            return inertia('Response', ['response' => 'Failed to retrieve the information!']);
+        }
+
         // Extract the generated text from the response
         $res = json_decode($response, true);
         $url = $res['data'][0]['url'];

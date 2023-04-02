@@ -38,7 +38,7 @@
                                 <button type="button" style="height : 40px;" class="btn btn-danger mr-1" @click="clearAsk">Clear <strong>X</strong></button>
                             </td>
                             <td>
-                                <Link :href="checked==false? route('app.ask') : route('app.img.ask')" type="button" class="btn btn-primary" method="post" :data="{'prompt': prompt}">
+                                <Link :href="checked==false? route('app.ask') : route('app.img.ask')" type="button" class="btn btn-primary" method="post" @click="typingResponse = '';" :data="{'prompt': prompt}">
                                     <table>
                                         <tr>
                                             <td>
@@ -57,7 +57,7 @@
                     </table>
                 </div>
             </div>
-            <textarea style="min-height: 250px;" class="form-control mt-3" id="exampleFormControlTextarea1" rows="3">{{response}}</textarea>
+            <textarea style="min-height: 250px;" class="form-control mt-3" id="exampleFormControlTextarea1" rows="3">{{typingResponse}}</textarea>
           </div>
     </div>
 </template>
@@ -78,12 +78,35 @@ export default {
         return {
             prompt : "",
             checked : false,
+            typingResponse : '',
+        }
+    },
+    mounted() {
+        this.writingEffect();
+    },
+    watch: {
+        response(newValue, oldValue) {
+            if(newValue != oldValue)
+            {
+                this.writingEffect();
+            }
         }
     },
     methods : {
         clearAsk ()
         {
             this.prompt = "";
+        },
+        writingEffect()
+        {
+            let length = this.response.length;
+            for(let i = 0; i < length; i++)
+            {
+                setTimeout(() => {
+                    // console.log(this.response.charAt(i));
+                    this.typingResponse = this.typingResponse + '' + this.response.charAt(i);
+                }, i * 10); // Delay for i * 1000ms (i seconds)
+            }
         }
     }
 }

@@ -19798,12 +19798,36 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       prompt: "",
-      checked: false
+      checked: false,
+      typingResponse: ''
     };
+  },
+  mounted: function mounted() {
+    this.writingEffect();
+  },
+  watch: {
+    response: function response(newValue, oldValue) {
+      if (newValue != oldValue) {
+        this.writingEffect();
+      }
+    }
   },
   methods: {
     clearAsk: function clearAsk() {
       this.prompt = "";
+    },
+    writingEffect: function writingEffect() {
+      var _this = this;
+      var length = this.response.length;
+      var _loop = function _loop(i) {
+        setTimeout(function () {
+          // console.log(this.response.charAt(i));
+          _this.typingResponse = _this.typingResponse + '' + _this.response.charAt(i);
+        }, i * 10); // Delay for i * 1000ms (i seconds)
+      };
+      for (var i = 0; i < length; i++) {
+        _loop(i);
+      }
     }
   }
 });
@@ -20562,6 +20586,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "button",
     "class": "btn btn-primary",
     method: "post",
+    onClick: _cache[3] || (_cache[3] = function ($event) {
+      $data.typingResponse = '';
+    }),
     data: {
       'prompt': $data.prompt
     }
@@ -20570,7 +20597,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [_hoisted_17];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href", "data"])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.response), 1 /* TEXT */)])]);
+  }, 8 /* PROPS */, ["href", "data"])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.typingResponse), 1 /* TEXT */)])]);
 }
 
 /***/ }),

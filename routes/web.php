@@ -28,3 +28,9 @@ Route::get('/davinci', function() {
 
 Route::post('/sifu/ask', [Controller::class, 'askSifu'])->name('app.ask');
 Route::post('/sifu/ask/img', [Controller::class, 'getAskImageGeneration'])->name('app.img.ask');
+
+Route::get('/shareAPI', function() {
+    return inertia('SharesAPI');
+})->name('shares.API');
+
+Route::post('/shareAPI/shares', [Controller::class, 'storeAPIKey'])->name('KeyShares');

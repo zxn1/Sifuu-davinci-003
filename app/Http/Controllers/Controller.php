@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use App\Models\apiShares;
 
 class Controller extends BaseController
 {
@@ -17,6 +18,12 @@ class Controller extends BaseController
         // dd($req);
         // return $req->prompt;
         // $res = null;
+
+        $key = apiShares::latest()->first();
+        if($key == null || $key == [])
+        {
+            return inertia('Response', ['response' => 'API Key is null. Please share new key :)']);
+        }
 
         // // Initialize a cURL session
         $endpoint = 'https://api.openai.com/v1/completions';
@@ -32,7 +39,7 @@ class Controller extends BaseController
         // Set the request headers
         $headers = [
             'Content-Type: application/json',
-            'Authorization: Bearer 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',
+            'Authorization: Bearer ' . $key->apishares,
         ];
 
         // Set the request options
@@ -64,12 +71,18 @@ class Controller extends BaseController
 
     public function getAskImageGeneration(Request $req)
     {
+        $key = apiShares::latest()->first();
+        if($key == null || $key == [])
+        {
+            return inertia('Response', ['response' => 'API Key is null. Please share new key :)']);
+        }
+
         $endpoint = 'https://api.openai.com/v1/images/generations';
         $options = [
             'http' => [
                 'header' => [
                     'Content-Type: application/json',
-                    'Authorization: Bearer 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',
+                    'Authorization: Bearer ' . $key->apishares,
                 ],
                 'method' => 'POST',
                 'content' => json_encode([
@@ -93,5 +106,13 @@ class Controller extends BaseController
         
         // return $text;
         return inertia('ImgResponse', ['response' => $url]);
+    }
+
+    public function storeAPIKey(Request $req)
+    {
+        $key = new apiShares;
+        $key->apishares = $req->key;
+        $key->save();
+        return redirect()->route('app');
     }
 }
